@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+venv/
+.venv/
+
+# Dados brutos (não versionar arquivos pesados)
+data/raw/*.csv
+data/raw/*.json
+data/raw/*.xlsx
+
+# Banco de dados local
+database/*.db
+
+# Outputs de análise
+analysis/output/
+*.png
+*.html
+
+# IDEs
+.vscode/
+.idea/
+*.swp
