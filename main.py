@@ -24,8 +24,22 @@ def run_collector():
 
 
 def run_etl(raw_results):
-    logger.info("▶ Etapa 2: ETL — em breve")
-    pass
+    from etl.pipeline import run_etl as etl_run
+
+    logger.info("▶ Etapa 2: ETL")
+
+    datasets = []
+    seen = set()
+    for term_datasets in raw_results.values():
+        for ds in term_datasets:
+            did = ds.get("id")
+            if did and did not in seen:
+                seen.add(did)
+                datasets.append(ds)
+
+    processed = etl_run(datasets)
+    logger.info("  Datasets processados: %d", len(processed))
+    return processed
 
 
 def run_storage(dataframes):
@@ -44,8 +58,8 @@ if __name__ == "__main__":
     print("=" * 55 + "\n")
 
     raw_results = run_collector()
-    run_etl(raw_results)
-    run_storage(None)
+    processed = run_etl(raw_results)
+    run_storage(processed)
     run_analysis()
 
     print("\n✅ Pipeline concluído.")
