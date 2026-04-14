@@ -43,8 +43,22 @@ def run_etl(raw_results):
 
 
 def run_storage(dataframes):
-    logger.info("▶ Etapa 3: Storage — em breve")
-    pass
+    from database.schema import create_tables
+    from database.repository import insert_dataframe, list_datasets
+
+    logger.info("▶ Etapa 3: Storage")
+
+    create_tables()
+
+    if not dataframes:
+        logger.warning("  Nenhum dado para armazenar.")
+        return
+
+    for nome, df in dataframes.items():
+        insert_dataframe(nome, df)
+
+    saved = list_datasets()
+    logger.info("  Datasets no banco: %d", len(saved))
 
 
 def run_analysis():
